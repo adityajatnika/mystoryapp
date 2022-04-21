@@ -1,0 +1,22 @@
+<resources>
+    <string name="app_name">My Story App</string>
+    <string name="camera_x">CameraX</string>
+    <string name="camera">Kamera</string>
+    <string name="gallery">Galeri</string>
+    <string name="upload">Unggah</string>
+    <string name="message">Message</string>
+    <string name="caption">Caption</string>
+    <string name="add_story">Add Story</string>
+    <string name="sign_in">Sign in</string>
+    <string name="already_have_account">Already have account?</string>
+    <string name="login">LOGIN</string>
+    <string name="your_name">Your Name</string>
+    <string name="register">Register</string>
+    <string name="photo">Photo</string>
+    <string name="list_story">List Story</string>
+    <string name="refresh">Refresh</string>
+    <string name="settings">Settings</string>
+    <string name="retrofit_instance_failed">Gagal instance Retrofit</string>
+    <string name="picture_not_found">Silakan masukkan berkas gambar terlebih dahulu.</string>
+    <string name="choose_picture">Pilih gambar</string>
+</resources>
