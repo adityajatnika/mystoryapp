@@ -8,5 +8,7 @@
             app:showAsAction="always" />
         <item android:id="@+id/menu_settings"
             android:title="@string/settings" />
+        <item android:id="@+id/menu_logout"
+            android:title="@string/logout" />
     </group>
 </menu>

@@ -51,7 +51,7 @@
         tools:layout_editor_absoluteX="7dp">
 
         <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/tx_message"
+            android:id="@+id/edt_desc"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="top"

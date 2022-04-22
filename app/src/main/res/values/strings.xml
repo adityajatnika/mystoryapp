@@ -19,4 +19,7 @@
     <string name="retrofit_instance_failed">Gagal instance Retrofit</string>
     <string name="picture_not_found">Silakan masukkan berkas gambar terlebih dahulu.</string>
     <string name="choose_picture">Pilih gambar</string>
+    <string name="logout">Logout</string>
+    <string name="incomplete_form">Harap lengkapi form terlebih dahulu</string>
+    <string name="autentication_failed">Autentikasi Gagal</string>
 </resources>

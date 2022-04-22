@@ -1,44 +1,35 @@
 package com.example.mystoryapp.ui.viewmodel
 
 import android.util.Log
-import androidx.lifecycle.*
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
 import com.example.mystoryapp.ResponseStatus
-import com.example.mystoryapp.data.Story
-import com.example.mystoryapp.data.User
-import com.example.mystoryapp.data.local.SessionManager
-import com.example.mystoryapp.data.remote.response.ListStoryItem
 import com.example.mystoryapp.data.remote.response.LoginResponse
+import com.example.mystoryapp.data.remote.response.RegisterResponse
 import com.example.mystoryapp.data.remote.retrofit.ApiConfig
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class LoginViewModel : ViewModel() {
-    val user = MutableLiveData<User>()
+class RegisterViewModel: ViewModel() {
+
+    val isSuccess = MutableLiveData(false)
     val isLoading = MutableLiveData(false)
     val stringError = MutableLiveData<String>()
 
-    fun postLogin(email : String, pass : String){
+    fun postRegister(name: String, email: String, pass: String) {
         isLoading.postValue(true)
-        val client = ApiConfig.getApiService().login(email, pass)
-        client.enqueue(object : Callback<LoginResponse> {
+        val client = ApiConfig.getApiService().register(name, email, pass)
+        client.enqueue(object : Callback<RegisterResponse> {
             override fun onResponse(
-                call: Call<LoginResponse>,
-                response: Response<LoginResponse>
+                call: Call<RegisterResponse>,
+                response: Response<RegisterResponse>
             ) {
+                isLoading.postValue(false)
                 if (response.isSuccessful) {
                     val responseBody = response.body()
                     if (responseBody != null) {
-                        user.postValue(User(
-                            responseBody.loginResult.name,
-                            email,
-                            pass,
-                            responseBody.loginResult.token)
-                        )
-//                        }
-                        isLoading.postValue(false)
-                        Log.e(TAG, "masuk cek respon setelah courutine")
-                        Log.e(TAG, responseBody.loginResult.token)
+                        isSuccess.postValue(true)
                     }
                 } else {
                     val errorMessage :String = response.message().ifEmpty {
@@ -50,18 +41,18 @@ class LoginViewModel : ViewModel() {
                         }
                     }
                     stringError.postValue(errorMessage)
+                    Log.e(LoginViewModel.TAG, errorMessage)
                 }
             }
 
-            override fun onFailure(call: Call<LoginResponse>, t: Throwable) {
+            override fun onFailure(call: Call<RegisterResponse>, t: Throwable) {
                 isLoading.postValue(false)
                 stringError.postValue(t.message)
-                Log.e(TAG, t.message.toString())
+                Log.e(LoginViewModel.TAG, t.message.toString())
                 t.printStackTrace()
             }
         })
     }
-    companion object {
-        val TAG: String = LoginViewModel::class.java.simpleName
-    }
+
+
 }

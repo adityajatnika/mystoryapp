@@ -13,13 +13,11 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.FileProvider
 import androidx.lifecycle.ViewModelProvider
 import com.example.mystoryapp.R
-import com.example.mystoryapp.data.local.AccountPreferences
+import com.example.mystoryapp.data.local.SessionManager
 import com.example.mystoryapp.data.remote.response.PostStoryResponse
 import com.example.mystoryapp.data.remote.retrofit.ApiConfig
 import com.example.mystoryapp.databinding.ActivityStoryBinding
-import com.example.mystoryapp.rotateBitmap
 import com.example.mystoryapp.ui.viewmodel.LoginViewModel
-import com.example.mystoryapp.ui.viewmodel.ViewModelFactory
 import com.example.mystoryapp.uriToFile
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
@@ -34,35 +32,24 @@ import java.io.File
 import java.io.FileOutputStream
 
 class StoryActivity : AppCompatActivity() {
-
+    private lateinit var sessionManager: SessionManager
     private lateinit var binding: ActivityStoryBinding
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityStoryBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
-        val pref = AccountPreferences.getInstance(dataStore)
-        val loginViewModel = ViewModelProvider(this, ViewModelFactory(pref))[LoginViewModel::class.java]
+        sessionManager = SessionManager(this)
 
         binding.cameraButton.setOnClickListener { startTakePhoto() }
         binding.galleryButton.setOnClickListener { startGallery() }
-
-        loginViewModel.getToken().observe(this
-        ){
-            val token = it.toString()
-            binding.uploadButton.setOnClickListener {
-                uploadImage(token)
-            }
-        }
-
-        binding.uploadButton.setOnClickListener { uploadImage(loginViewModel.getToken().toString()) }
+        binding.uploadButton.setOnClickListener { uploadImage() }
     }
 
-    private fun uploadImage(token : String) {
+    private fun uploadImage() {
 //        Toast.makeText(this, "Fitur ini belum tersedia", Toast.LENGTH_SHORT).show()
         if (getFile != null) {
             val file = reduceFileImage(getFile as File)
-            val desc = binding.txMessage.toString().toRequestBody("text/plain".toMediaType())
+            val desc = "apalo".toRequestBody("text/plain".toMediaType())
 //            val description = desc.toString().toRequestBody("text/plain".toMediaType())
             val requestImageFile = file.asRequestBody("image/jpeg".toMediaTypeOrNull())
             val imageMultipart: MultipartBody.Part = MultipartBody.Part.createFormData(
@@ -71,7 +58,7 @@ class StoryActivity : AppCompatActivity() {
                 requestImageFile
             )
 
-            val service = ApiConfig.getApiService().postStory(token = StringBuilder("Bearer ").append(token).toString(), imageMultipart, desc)
+            val service = ApiConfig.getApiService().postStory(token = StringBuilder("Bearer ").append(sessionManager.fetchAuthToken()).toString(), imageMultipart, desc)
             service.enqueue(object : Callback<PostStoryResponse> {
                 override fun onResponse(
                     call: Call<PostStoryResponse>,

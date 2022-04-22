@@ -1,10 +1,10 @@
 package com.example.mystoryapp.ui.viewmodel
 
 import android.util.Log
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
+import androidx.lifecycle.*
 import com.example.mystoryapp.ResponseStatus
 import com.example.mystoryapp.data.Story
+import com.example.mystoryapp.data.local.SessionManager
 import com.example.mystoryapp.data.remote.response.ListStoryItem
 import com.example.mystoryapp.data.remote.response.StoryResponse
 import com.example.mystoryapp.data.remote.retrofit.ApiConfig
@@ -16,7 +16,20 @@ class MainViewModel : ViewModel(){
     val story = MutableLiveData<List<Story>>()
     val isLoading = MutableLiveData(true)
     val stringError = MutableLiveData<String>()
+    private lateinit var sessionManager: SessionManager
 
+//    fun getToken(): LiveData<String> {
+//        return pref.getToken().asLiveData()
+//    }
+
+//    fun logout(){
+////        viewModelScope.launch {
+////            pref.setToken("")
+////            pref.saveAccountLogin("", "", "")
+////        }
+//        sessionManager.saveUserInfo("","","")
+//        sessionManager.saveAuthToken(null)
+//    }
 
     private fun setListStory(responseBody: List<ListStoryItem>) {
         val listStory = ArrayList<Story>()
@@ -28,7 +41,7 @@ class MainViewModel : ViewModel(){
         story.postValue(listStory)
     }
 
-    fun getListStory(token: String) {
+    fun getListStory(token : String) {
         isLoading.postValue(true)
         val client = ApiConfig.getApiService().getStories(
             token = StringBuilder("Bearer ").append(token).toString()
@@ -45,13 +58,16 @@ class MainViewModel : ViewModel(){
                         setListStory(responseBody.listStory)
                     }
                 } else {
-                    val errorMessage = when (val statusCode = response.code()) {
-                        ResponseStatus.BAD_REQUEST.stat -> "$statusCode : Bad Request"
-                        ResponseStatus.FORBIDDEN.stat -> "$statusCode : Forbidden"
-                        ResponseStatus.NOT_FOUND.stat -> "$statusCode : Not Found"
-                        else -> "$statusCode"
+                    val errorMessage :String = response.message().ifEmpty {
+                        when (val statusCode = response.code()) {
+                            ResponseStatus.BAD_REQUEST.stat -> "$statusCode : Bad Request"
+                            ResponseStatus.FORBIDDEN.stat -> "$statusCode : Forbidden"
+                            ResponseStatus.NOT_FOUND.stat -> "$statusCode : Not Found"
+                            else -> "$statusCode"
+                        }
                     }
-                    Log.e(TAG, errorMessage)
+                    stringError.postValue(errorMessage)
+                    Log.e(LoginViewModel.TAG, errorMessage)
                 }
             }
 

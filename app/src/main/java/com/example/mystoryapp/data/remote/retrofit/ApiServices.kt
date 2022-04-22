@@ -5,6 +5,7 @@ package com.example.githubuserapp.data.remote.retrofit
 //import com.example.mystoryapp.data.remote.response.UserResponse
 import com.example.mystoryapp.data.remote.response.LoginResponse
 import com.example.mystoryapp.data.remote.response.PostStoryResponse
+import com.example.mystoryapp.data.remote.response.RegisterResponse
 import com.example.mystoryapp.data.remote.response.StoryResponse
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
@@ -35,9 +36,15 @@ import retrofit2.http.*
 //}
 
 interface ApiServices {
-    @GET("register")
-    @Headers()
-    fun register()
+
+    @FormUrlEncoded
+    @POST("register")
+    @Headers("Authorization: token 12345")
+    fun register(
+        @Field("name") name:String,
+        @Field("email") email:String,
+        @Field("password") password:String
+    ): Call<RegisterResponse>
 
     @GET("stories")
     fun getStories(@Header("Authorization") token : String ): Call<StoryResponse>
@@ -47,20 +54,8 @@ interface ApiServices {
     fun postStory(
         @Header("Authorization") token: String,
         @Part file: MultipartBody.Part,
-//        @Field("photo") photo: String,
         @Part("description") desc: RequestBody
     ): Call<PostStoryResponse>
-
-//    @FormUrlEncoded
-//    @Headers("Authorization: token 12345")
-//    @POST("review")
-//    fun postStory(
-//        @Field("photo") photo: MultipartBody.Part,
-//        @Field("desc") desc: RequestBody
-//    ): Call<PostStoryResponse>
-
-//    @GET("driver/v1/driver")
-//    fun getAuthorizedDriver(@Header("authorization") auth: String?): Call<Driver?>?
 
     @FormUrlEncoded
     @Headers("Authorization: token 12345")
