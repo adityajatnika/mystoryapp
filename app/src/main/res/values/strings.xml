@@ -22,4 +22,8 @@
     <string name="logout">Logout</string>
     <string name="incomplete_form">Harap lengkapi form terlebih dahulu</string>
     <string name="autentication_failed">Autentikasi Gagal</string>
+    <string name="user_name">Nama User</string>
+    <string name="caption_image">deskripsi gambar</string>
+    <string name="story_photo">foto story</string>
+    <string name="detail_story">Detail Story</string>
 </resources>

@@ -7,5 +7,5 @@ import kotlinx.parcelize.Parcelize
 data class Story(
     val name: String,
     val photo: String,
-    val desc: String
+    val desc: String = ""
 ) : Parcelable

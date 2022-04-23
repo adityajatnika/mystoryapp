@@ -49,7 +49,8 @@ class StoryActivity : AppCompatActivity() {
 //        Toast.makeText(this, "Fitur ini belum tersedia", Toast.LENGTH_SHORT).show()
         if (getFile != null) {
             val file = reduceFileImage(getFile as File)
-            val desc = "apalo".toRequestBody("text/plain".toMediaType())
+            val text = binding.edtDesc.text
+            val desc = text.toString().toRequestBody("text/plain".toMediaType())
 //            val description = desc.toString().toRequestBody("text/plain".toMediaType())
             val requestImageFile = file.asRequestBody("image/jpeg".toMediaTypeOrNull())
             val imageMultipart: MultipartBody.Part = MultipartBody.Part.createFormData(

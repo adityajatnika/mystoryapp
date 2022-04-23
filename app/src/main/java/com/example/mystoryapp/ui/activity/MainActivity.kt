@@ -1,8 +1,10 @@
 package com.example.mystoryapp.ui.activity
 
+import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.content.res.Configuration
+import android.os.Build.USER
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -11,6 +13,7 @@ import android.view.MenuItem
 import android.view.View
 import android.widget.Toast
 import androidx.activity.viewModels
+import androidx.core.app.ActivityOptionsCompat
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.preferencesDataStore
@@ -104,11 +107,21 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
                 val adapter = ListStoryAdapter(it)
                 binding.rvStory.adapter = adapter
 
-                adapter.setOnItemClickCallback(object : ListStoryAdapter.OnItemClickCallback {
-                    override fun onItemClicked(data: Story) {
-                        Toast.makeText(this@MainActivity, StringBuilder("desc : ").append(data.desc), Toast.LENGTH_SHORT).show()
-                    }
-                })
+//                adapter.setOnItemClickCallback(object : ListStoryAdapter.OnItemClickCallback {
+//                    override fun onItemClicked(data: Story) {
+////                        Toast.makeText(this@MainActivity, StringBuilder("desc : ").append(data.desc), Toast.LENGTH_SHORT).show()
+//                        val intent = Intent(this@MainActivity, DetailStoryActivity::class.java)
+//                        intent.putExtra(DetailStoryActivity.EXTRA_STORY, data)
+//
+//                        val optionsCompat: ActivityOptionsCompat =
+//                            ActivityOptionsCompat.makeSceneTransitionAnimation(
+//                                this@MainActivity as Activity,
+//                                Pair(, "profile"),
+//                                Pair(data.name, "name"),
+//                            )
+//                        this@MainActivity.startActivity(intent, optionsCompat.toBundle())
+//                    }
+//                })
             }
         }
 

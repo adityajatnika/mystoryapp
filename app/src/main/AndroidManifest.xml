@@ -28,6 +28,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.MyStoryApp">
         <activity
+            android:name=".ui.activity.DetailStoryActivity"
+            android:exported="false" />
+        <activity
             android:name=".data.local.AccountPreferences"
             android:exported="false" />
         <activity
