@@ -2,12 +2,10 @@ package com.example.mystoryapp.ui.activity
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.widget.TextView
 import com.bumptech.glide.Glide
 import com.example.mystoryapp.R
 import com.example.mystoryapp.data.Story
 import com.example.mystoryapp.databinding.ActivityDetailStoryBinding
-import com.example.mystoryapp.databinding.ActivityMainBinding
 
 class DetailStoryActivity : AppCompatActivity() {
 
@@ -22,7 +20,6 @@ class DetailStoryActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         setUpView()
-
     }
 
     private fun setUpView() {

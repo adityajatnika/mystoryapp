@@ -1,44 +1,31 @@
 package com.example.mystoryapp.ui.activity
 
-import android.app.Activity
-import android.content.Context
 import android.content.Intent
 import android.content.res.Configuration
-import android.os.Build.USER
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.provider.Settings
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.widget.Toast
 import androidx.activity.viewModels
-import androidx.core.app.ActivityOptionsCompat
-import androidx.datastore.core.DataStore
-import androidx.datastore.preferences.core.Preferences
-import androidx.datastore.preferences.preferencesDataStore
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.mystoryapp.R
-import com.example.mystoryapp.data.Story
 import com.example.mystoryapp.data.local.SessionManager
 import com.example.mystoryapp.databinding.ActivityMainBinding
 import com.example.mystoryapp.ui.adapter.ListStoryAdapter
 import com.example.mystoryapp.ui.viewmodel.MainViewModel
-import java.lang.StringBuilder
 
-private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "account")
 
 class MainActivity : AppCompatActivity(), View.OnClickListener {
     private lateinit var sessionManager: SessionManager
     private val viewModel: MainViewModel by viewModels()
     private lateinit var binding: ActivityMainBinding
-//    private lateinit var token: LiveData<String>
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        Log.e(TAG, "masuk oncreate")
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
@@ -48,43 +35,23 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         setContentView(binding.root)
 
         sessionManager = SessionManager(this)
-//        token = viewModel.getToken()
         binding.btnAdd.setOnClickListener(this)
         binding.rvStory.setHasFixedSize(true)
 
         setUpView(viewModel)
-        Log.e(TAG, "masuk mau load page")
         loadPage(viewModel)
     }
 
     private fun loadPage(viewModel: MainViewModel) {
-        Log.e(TAG, "masuk load page")
         val token = sessionManager.fetchAuthToken()
         Log.e(TAG, token.toString())
         if(token != null){
-            Log.e(TAG, "masuk load page main")
             viewModel.getListStory(token)
         }  else {
             val intent = Intent(this@MainActivity, LoginActivity::class.java)
-            Log.e(TAG, "masuk load page main else ke login")
             startActivity(intent)
             finish()
         }
-
-
-//        viewModel.getToken().observe(this
-//        ){
-//            Log.e(TAG, it.toString())
-//            if (it != "") {
-//                viewModel.getListStory(it.toString())
-//                Log.e(TAG, "masuk load page ke main")
-//            } else {
-//                val intent = Intent(this@MainActivity, LoginActivity::class.java)
-//                Log.e(TAG, "masuk load page main else ke login")
-//                startActivity(intent)
-//                finish()
-//            }
-//        }
     }
 
     private fun setUpView(viewModel: MainViewModel) {
@@ -106,22 +73,6 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
             if(it != null){
                 val adapter = ListStoryAdapter(it)
                 binding.rvStory.adapter = adapter
-
-//                adapter.setOnItemClickCallback(object : ListStoryAdapter.OnItemClickCallback {
-//                    override fun onItemClicked(data: Story) {
-////                        Toast.makeText(this@MainActivity, StringBuilder("desc : ").append(data.desc), Toast.LENGTH_SHORT).show()
-//                        val intent = Intent(this@MainActivity, DetailStoryActivity::class.java)
-//                        intent.putExtra(DetailStoryActivity.EXTRA_STORY, data)
-//
-//                        val optionsCompat: ActivityOptionsCompat =
-//                            ActivityOptionsCompat.makeSceneTransitionAnimation(
-//                                this@MainActivity as Activity,
-//                                Pair(, "profile"),
-//                                Pair(data.name, "name"),
-//                            )
-//                        this@MainActivity.startActivity(intent, optionsCompat.toBundle())
-//                    }
-//                })
             }
         }
 
@@ -151,20 +102,15 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
                 true
             }
             R.id.menu_settings -> {
-                Toast.makeText(this, "Menu Belum Tersedia", Toast.LENGTH_LONG).show()
-                //                val i = Intent(this, MenuActivity::class.java)
-                //                startActivity(i)
+                startActivity(Intent(Settings.ACTION_LOCALE_SETTINGS))
                 true
             }
             R.id.menu_logout -> {
-                Log.e(TAG, "masuk logout")
                 sessionManager.saveUserInfo("", "", "")
                 sessionManager.saveAuthToken(null)
                 val intent = Intent(this@MainActivity, LoginActivity::class.java)
                 startActivity(intent)
-                Log.e(TAG, "masuk mau ke finish")
                 finish()
-                Log.e(TAG, "masuk setelah finish")
                 true
             }
             else -> true
@@ -173,6 +119,5 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
 
     companion object {
         val TAG: String = MainActivity::class.java.simpleName
-        const val EXTRA_LOGIN = "extra_login"
     }
 }

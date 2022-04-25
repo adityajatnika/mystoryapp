@@ -17,14 +17,15 @@
         app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/my_story_logo" />
+        app:srcCompat="@drawable/my_story_logo"
+        android:contentDescription="@string/mystory_brand_logo" />
 
     <TextView
         android:id="@+id/textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
-        android:text="Join now"
+        android:text="@string/join_now"
         android:textSize="24sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imageView" />
@@ -43,10 +44,11 @@
         android:paddingTop="0dp"
         android:textAlignment="center"
         android:textColor="#767676"
-        android:textSize="16dp"
+        android:textSize="16sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView" />
+        app:layout_constraintTop_toBottomOf="@+id/textView"
+        android:autofillHints="" />
 
     <com.example.mystoryapp.ui.customview.MyEditEmail
         android:id="@+id/edt_email"

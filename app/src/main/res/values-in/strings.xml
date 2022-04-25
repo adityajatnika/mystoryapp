@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">MyStory App</string>
+    <string name="camera_x">CameraX</string>
+    <string name="camera">Kamera</string>
+    <string name="gallery">Galeri</string>
+    <string name="upload">Unggah</string>
+    <string name="message">Pesan</string>
+    <string name="caption">Keterangan</string>
+    <string name="add_story">Tambah Cerita</string>
+    <string name="sign_in">Sign in</string>
+    <string name="already_have_account">Sudah punya akun?</string>
+    <string name="login">MASUK</string>
+    <string name="your_name">Nama Kamu</string>
+    <string name="register">Daftar</string>
+    <string name="photo">Photo</string>
+    <string name="list_story">Daftar Cerita</string>
+    <string name="refresh">Perbarui</string>
+    <string name="settings">Pengaturan</string>
+    <string name="retrofit_instance_failed">Contoh retrofit gagal</string>
+    <string name="picture_not_found">Silahkan masukkan file gambar terlebih dahulu.</string>
+    <string name="choose_picture">Pilih Gambar</string>
+    <string name="logout">Keluar</string>
+    <string name="incomplete_form">Silahkan isi formulir terlebih dahulu</string>
+    <string name="authentication_failed">Otentikasi gagal</string>
+    <string name="user_name">Nama Pengguna</string>
+    <string name="caption_image">deskripsi gambar</string>
+    <string name="story_photo">foto cerita</string>
+    <string name="detail_story">Detail Cerita</string>
+    <string name="password">Kata Sandi</string>
+    <string name="email_address">Alamat Email</string>
+    <string name="caption_is_null">Harap isi keterangan dulu</string>
+    <string name="take_picture_failed">Gagal mengambil gambar.</string>
+    <string name="show_camera_failed">Gagal memunculkan kamera.</string>
+    <string name="menu_not_available">Menu Tidak Tersedia</string>
+    <string name="register_success">Selamat! Anda telah terdaftar</string>
+    <string name="error_password">Harus minimal 6 karakter</string>
+    <string name="capture_the_image_button">Ambil Tombol Gambar</string>
+    <string name="switch_camera_button">Beralih Tombol Kamera</string>
+    <string name="mystory_brand_logo">Logo merek MystorY</string>
+    <string name="one_more_step">Satu langkah lagi</string>
+    <string name="don_t_have_account">Tidak punya akun?</string>
+    <string name="register_now">Daftar sekarang</string>
+    <string name="join_now">Gabung now</string>
+    <string name="add_your_story">Tambah Ceritamu</string>
+    <string name="language">Bahasa</string>
+</resources>

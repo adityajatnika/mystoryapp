@@ -4,12 +4,10 @@ import android.Manifest
 import android.content.Intent
 import android.content.Intent.ACTION_GET_CONTENT
 import android.content.pm.PackageManager
-import android.graphics.Bitmap
 import android.graphics.Bitmap.CompressFormat
 import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Bundle
-import android.os.Environment
 import android.view.View
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
@@ -39,10 +37,10 @@ import java.io.FileOutputStream
 class StoryActivity : AppCompatActivity() {
     private lateinit var sessionManager: SessionManager
     private lateinit var binding: ActivityStoryBinding
-    //    private lateinit var cameraExecutor: ExecutorService
-//    private var cameraSelector: CameraSelector = CameraSelector.DEFAULT_BACK_CAMERA
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        supportActionBar?.title = getString(R.string.add_your_story)
+
         binding = ActivityStoryBinding.inflate(layoutInflater)
         setContentView(binding.root)
         sessionManager = SessionManager(this)
@@ -56,16 +54,11 @@ class StoryActivity : AppCompatActivity() {
                 REQUEST_CODE_PERMISSIONS
             )
         }
-//        cameraExecutor = Executors.newSingleThreadExecutor()
 
         binding.cameraButton.setOnClickListener {
-//            cameraSelector = if (cameraSelector.equals(CameraSelector.DEFAULT_BACK_CAMERA)) CameraSelector.DEFAULT_FRONT_CAMERA
-//            else CameraSelector.DEFAULT_BACK_CAMERA
             startCameraX() }
         binding.galleryButton.setOnClickListener { startGallery() }
         binding.uploadButton.setOnClickListener { uploadImage() }
-
-
     }
 
     private fun uploadImage() {
@@ -119,22 +112,6 @@ class StoryActivity : AppCompatActivity() {
         val chooser = Intent.createChooser(intent, getString(R.string.choose_picture))
         launcherIntentGallery.launch(chooser)
     }
-
-//    private fun startTakePhoto() {
-//        val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
-//        intent.resolveActivity(packageManager)
-//        com.example.mystoryapp.createTempFile(application).also {
-//            val photoURI: Uri = FileProvider.getUriForFile(
-//                this@StoryActivity,
-//                "com.example.mystoryapp",
-//                it
-//            )
-//            currentPhotoPath = it.absolutePath
-//            intent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI)
-////            intent.putExtra("isBackCamera", cameraSelector == CameraSelector.DEFAULT_BACK_CAMERA)
-//            launcherIntentCamera.launch(intent)
-//        }
-//    }
 
     private fun startCameraX() {
         val intent = Intent(this, CameraActivity::class.java)
@@ -190,17 +167,16 @@ class StoryActivity : AppCompatActivity() {
         var streamLength: Int
         do {
             val bmpStream = ByteArrayOutputStream()
-            bitmap.compress(Bitmap.CompressFormat.JPEG, compressQuality, bmpStream)
+            bitmap.compress(CompressFormat.JPEG, compressQuality, bmpStream)
             val bmpPicByteArray = bmpStream.toByteArray()
             streamLength = bmpPicByteArray.size
             compressQuality -= 5
         } while (streamLength > 1000000)
-        bitmap.compress(Bitmap.CompressFormat.JPEG, compressQuality, FileOutputStream(file))
+        bitmap.compress(CompressFormat.JPEG, compressQuality, FileOutputStream(file))
         return file
     }
 
-//    camera x
-
+    //camera x special function
     override fun onRequestPermissionsResult(
         requestCode: Int,
         permissions: Array<String>,

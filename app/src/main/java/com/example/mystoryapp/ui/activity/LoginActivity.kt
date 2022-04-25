@@ -1,25 +1,16 @@
 package com.example.mystoryapp.ui.activity
 
-import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.activity.viewModels
-import androidx.datastore.core.DataStore
-import androidx.datastore.preferences.core.Preferences
-import androidx.datastore.preferences.preferencesDataStore
-import androidx.lifecycle.ViewModelProvider
 import com.example.mystoryapp.R
 import com.example.mystoryapp.data.User
 import com.example.mystoryapp.data.local.SessionManager
 import com.example.mystoryapp.databinding.ActivityLoginBinding
 import com.example.mystoryapp.ui.viewmodel.LoginViewModel
-import com.example.mystoryapp.ui.viewmodel.MainViewModel
-
-private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "account")
 
 class LoginActivity : AppCompatActivity() {
     private lateinit var binding: ActivityLoginBinding
@@ -28,7 +19,6 @@ class LoginActivity : AppCompatActivity() {
     private lateinit var sessionManager: SessionManager
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        Log.e(TAG, "masuk oncreate")
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
 
@@ -79,16 +69,6 @@ class LoginActivity : AppCompatActivity() {
                 startActivity(intent)
             }
         }
-
-//        viewModel.isSuccess.observe(this){
-//            Log.e(TAG, it.toString())
-//            if(it==true){
-//                val intent = Intent(this@LoginActivity, MainActivity::class.java)
-//                Log.e(TAG, "masuk pengecekan sukses login")
-//                startActivity(intent)
-//                finish()
-//            }
-//        }
 
         viewModel.stringError.observe(this){
             if(it != null){

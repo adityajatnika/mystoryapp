@@ -17,14 +17,15 @@
         app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/my_story_logo" />
+        app:srcCompat="@drawable/my_story_logo"
+        android:contentDescription="@string/mystory_brand_logo" />
 
     <TextView
         android:id="@+id/textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
-        android:text="One more step"
+        android:text="@string/one_more_step"
         android:textSize="24sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imageView" />
@@ -62,25 +63,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/edt_email" />
 
-<!--    <EditText-->
-<!--        android:id="@+id/edt_password"-->
-<!--        android:layout_width="0dp"-->
-<!--        android:layout_height="49dp"-->
-<!--        android:layout_marginTop="24dp"-->
-<!--        android:background="@drawable/input"-->
-<!--        android:ems="10"-->
-<!--        android:hint="Password"-->
-<!--        android:inputType="none|textPassword"-->
-<!--        android:outlineProvider="none"-->
-<!--        android:paddingTop="0dp"-->
-<!--        android:textAlignment="center"-->
-<!--        android:textColor="#767676"-->
-<!--        android:textSize="16dp"-->
-<!--        app:layout_constraintEnd_toEndOf="parent"-->
-<!--        app:layout_constraintHorizontal_bias="1.0"-->
-<!--        app:layout_constraintStart_toStartOf="parent"-->
-<!--        app:layout_constraintTop_toBottomOf="@+id/edt_email" />-->
-
     <Button
         android:id="@+id/btn_login"
         android:layout_width="0dp"
@@ -88,12 +70,11 @@
         android:layout_marginTop="20dp"
         android:background="@drawable/input"
         android:paddingTop="0dp"
-        android:text="LOGIN"
+        android:text="@string/login"
         android:textAlignment="center"
         android:textColor="#FFFFFF"
         android:textSize="16sp"
         android:drawablePadding="10dp"
-        android:paddingEnd="15dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/edt_password" />
@@ -104,7 +85,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="28dp"
         android:layout_marginStart="50dp"
-        android:text="Don't have account? "
+        android:text="@string/don_t_have_account"
         app:layout_constraintEnd_toStartOf="@+id/btn_toRegister"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="@+id/btn_login"
@@ -115,7 +96,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="50dp"
-        android:text="Register now"
+        android:text="@string/register_now"
         android:textColor="@android:color/holo_red_light"
         app:layout_constraintEnd_toEndOf="@+id/btn_login"
         app:layout_constraintHorizontal_bias="0.5"

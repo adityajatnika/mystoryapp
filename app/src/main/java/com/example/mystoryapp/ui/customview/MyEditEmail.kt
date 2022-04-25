@@ -6,8 +6,6 @@ import android.text.Editable
 import android.text.TextWatcher
 import android.util.AttributeSet
 import android.util.Patterns
-import android.view.MotionEvent
-import android.view.View
 import androidx.appcompat.widget.AppCompatEditText
 import androidx.core.content.ContextCompat
 import com.example.mystoryapp.R
@@ -54,10 +52,6 @@ class MyEditEmail : AppCompatEditText {
 
     private fun showError() {
         error = "Must be valid email"
-    }
-
-    private fun hideCheck() {
-        setIconDrawables()
     }
 
     private fun setIconDrawables(

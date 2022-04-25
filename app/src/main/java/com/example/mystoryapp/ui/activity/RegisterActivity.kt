@@ -28,8 +28,6 @@ class RegisterActivity : AppCompatActivity(), View.OnClickListener {
         binding.btnToLogin.setOnClickListener(this)
         binding.btnRegister.setOnClickListener(this)
         binding.progressBar.visibility = View.INVISIBLE
-
-
     }
 
     override fun onClick(v: View?) {
@@ -68,7 +66,7 @@ class RegisterActivity : AppCompatActivity(), View.OnClickListener {
                     binding.edtPassword.text.toString())
                 val intent = Intent(this@RegisterActivity, LoginActivity::class.java)
                 intent.putExtra(LoginActivity.EXTRA_LOGIN, user)
-                Toast.makeText(this, "Selamat! Anda telah terdaftar", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, getString(R.string.register_success), Toast.LENGTH_SHORT).show()
                 startActivity(intent)
                 finish()
             }

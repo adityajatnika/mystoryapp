@@ -4,7 +4,6 @@ import android.util.Log
 import androidx.lifecycle.*
 import com.example.mystoryapp.ResponseStatus
 import com.example.mystoryapp.data.Story
-import com.example.mystoryapp.data.local.SessionManager
 import com.example.mystoryapp.data.remote.response.ListStoryItem
 import com.example.mystoryapp.data.remote.response.StoryResponse
 import com.example.mystoryapp.data.remote.retrofit.ApiConfig
@@ -16,20 +15,6 @@ class MainViewModel : ViewModel(){
     val story = MutableLiveData<List<Story>>()
     val isLoading = MutableLiveData(true)
     val stringError = MutableLiveData<String>()
-    private lateinit var sessionManager: SessionManager
-
-//    fun getToken(): LiveData<String> {
-//        return pref.getToken().asLiveData()
-//    }
-
-//    fun logout(){
-////        viewModelScope.launch {
-////            pref.setToken("")
-////            pref.saveAccountLogin("", "", "")
-////        }
-//        sessionManager.saveUserInfo("","","")
-//        sessionManager.saveAuthToken(null)
-//    }
 
     private fun setListStory(responseBody: List<ListStoryItem>) {
         val listStory = ArrayList<Story>()
@@ -73,7 +58,7 @@ class MainViewModel : ViewModel(){
 
             override fun onFailure(call: Call<StoryResponse>, t: Throwable) {
                 isLoading.postValue(false)
-                stringError.postValue("autentikasi gagal")
+                stringError.postValue(t.message)
                 Log.e(TAG, t.message.toString())
                 t.printStackTrace()
             }

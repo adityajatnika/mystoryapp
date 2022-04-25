@@ -1,8 +1,6 @@
 package com.example.mystoryapp.ui.activity
 
-import android.content.Context
 import android.content.Intent
-import android.hardware.camera2.CameraAccessException
 import android.os.Build
 import android.os.Bundle
 import android.view.WindowInsets
@@ -15,6 +13,7 @@ import androidx.camera.core.ImageCaptureException
 import androidx.camera.core.Preview
 import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.core.content.ContextCompat
+import com.example.mystoryapp.R
 import com.example.mystoryapp.createFile
 import com.example.mystoryapp.databinding.ActivityCameraBinding
 import java.util.concurrent.ExecutorService
@@ -68,7 +67,7 @@ class CameraActivity : AppCompatActivity() {
                 override fun onError(exc: ImageCaptureException) {
                     Toast.makeText(
                         this@CameraActivity,
-                        "Gagal mengambil gambar.",
+                        getString(R.string.take_picture_failed),
                         Toast.LENGTH_SHORT
                     ).show()
                 }
@@ -112,7 +111,7 @@ class CameraActivity : AppCompatActivity() {
             } catch (exc: Exception) {
                 Toast.makeText(
                     this@CameraActivity,
-                    "Gagal memunculkan kamera.",
+                    getString(R.string.show_camera_failed),
                     Toast.LENGTH_SHORT
                 ).show()
             }

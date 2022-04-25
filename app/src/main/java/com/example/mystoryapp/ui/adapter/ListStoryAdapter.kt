@@ -8,12 +8,10 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.core.app.ActivityOptionsCompat
-
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.mystoryapp.R
 import com.example.mystoryapp.data.Story
-import com.example.mystoryapp.data.User
 import com.example.mystoryapp.ui.activity.DetailStoryActivity
 import androidx.core.util.Pair
 
@@ -21,8 +19,8 @@ class ListStoryAdapter(private val listStory: List<Story>) : RecyclerView.Adapte
 
 
     class ListViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        var imgPhoto: ImageView = itemView.findViewById(R.id.img_item_photo)
-        var tvName: TextView = itemView.findViewById(R.id.tv_item_name)
+        private var imgPhoto: ImageView = itemView.findViewById(R.id.img_item_photo)
+        private var tvName: TextView = itemView.findViewById(R.id.tv_item_name)
         fun bind(story: Story) {
             Glide.with(itemView.context)
                 .load(story.photo)
@@ -54,5 +52,4 @@ class ListStoryAdapter(private val listStory: List<Story>) : RecyclerView.Adapte
     }
 
     override fun getItemCount(): Int = listStory.size
-
 }
