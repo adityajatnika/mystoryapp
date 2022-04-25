@@ -4,6 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:paddingStart="16dp"
+    android:paddingEnd="16dp"
     tools:context=".ui.activity.LoginActivity">
 
     <ImageView
@@ -22,77 +24,78 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
-        android:text="Sign in now"
+        android:text="One more step"
         android:textSize="24sp"
-        app:layout_constraintStart_toStartOf="@+id/guideline2"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imageView" />
 
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guideline2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        app:layout_constraintGuide_begin="16dp" />
-
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guideline3"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        app:layout_constraintGuide_begin="395dp" />
-
-    <EditText
+    <com.example.mystoryapp.ui.customview.MyEditEmail
         android:id="@+id/edt_email"
         android:layout_width="0dp"
         android:layout_height="49dp"
         android:layout_marginTop="20dp"
         android:background="@drawable/input"
-        android:ems="10"
-        android:hint="Email Address"
-        android:inputType="textPersonName"
-        android:outlineProvider="none"
-        android:paddingTop="0dp"
+        android:hint="@string/email_address"
+        android:inputType="textEmailAddress"
         android:textAlignment="center"
-        android:textColor="#767676"
-        android:textSize="16dp"
-        app:layout_constraintEnd_toStartOf="@+id/guideline3"
+        android:textSize="16sp"
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="@+id/guideline2"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView" />
 
-    <EditText
+    <com.example.mystoryapp.ui.customview.MyEditPassword
         android:id="@+id/edt_password"
-        android:layout_width="379dp"
-        android:layout_height="49dp"
-        android:layout_marginTop="24dp"
+        android:layout_width="0dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="20dp"
         android:background="@drawable/input"
-        android:ems="10"
-        android:hint="Password"
-        android:inputType="none|textPassword"
-        android:outlineProvider="none"
-        android:paddingTop="0dp"
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp"
+        android:inputType="textPassword"
         android:textAlignment="center"
-        android:textColor="#767676"
-        android:textSize="16dp"
-        app:layout_constraintEnd_toStartOf="@+id/guideline3"
+        android:textSize="16sp"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="@+id/guideline2"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/edt_email" />
+
+<!--    <EditText-->
+<!--        android:id="@+id/edt_password"-->
+<!--        android:layout_width="0dp"-->
+<!--        android:layout_height="49dp"-->
+<!--        android:layout_marginTop="24dp"-->
+<!--        android:background="@drawable/input"-->
+<!--        android:ems="10"-->
+<!--        android:hint="Password"-->
+<!--        android:inputType="none|textPassword"-->
+<!--        android:outlineProvider="none"-->
+<!--        android:paddingTop="0dp"-->
+<!--        android:textAlignment="center"-->
+<!--        android:textColor="#767676"-->
+<!--        android:textSize="16dp"-->
+<!--        app:layout_constraintEnd_toEndOf="parent"-->
+<!--        app:layout_constraintHorizontal_bias="1.0"-->
+<!--        app:layout_constraintStart_toStartOf="parent"-->
+<!--        app:layout_constraintTop_toBottomOf="@+id/edt_email" />-->
 
     <Button
         android:id="@+id/btn_login"
         android:layout_width="0dp"
         android:layout_height="49dp"
-        android:layout_marginTop="24dp"
+        android:layout_marginTop="20dp"
         android:background="@drawable/input"
         android:paddingTop="0dp"
         android:text="LOGIN"
         android:textAlignment="center"
         android:textColor="#FFFFFF"
         android:textSize="16sp"
-        app:layout_constraintEnd_toEndOf="@+id/edt_password"
-        app:layout_constraintHorizontal_bias="0.495"
-        app:layout_constraintStart_toStartOf="@+id/edt_password"
+        android:drawablePadding="10dp"
+        android:paddingEnd="15dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/edt_password" />
 
     <TextView
@@ -100,19 +103,21 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="28dp"
+        android:layout_marginStart="50dp"
         android:text="Don't have account? "
         app:layout_constraintEnd_toStartOf="@+id/btn_toRegister"
         app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="@+id/guideline2"
+        app:layout_constraintStart_toStartOf="@+id/btn_login"
         app:layout_constraintTop_toBottomOf="@+id/btn_login" />
 
     <TextView
         android:id="@+id/btn_toRegister"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginEnd="50dp"
         android:text="Register now"
         android:textColor="@android:color/holo_red_light"
-        app:layout_constraintEnd_toStartOf="@+id/guideline3"
+        app:layout_constraintEnd_toEndOf="@+id/btn_login"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/textView2"
         app:layout_constraintTop_toTopOf="@+id/textView2" />

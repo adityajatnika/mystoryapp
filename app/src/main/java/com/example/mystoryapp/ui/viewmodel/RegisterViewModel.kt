@@ -25,13 +25,16 @@ class RegisterViewModel: ViewModel() {
                 call: Call<RegisterResponse>,
                 response: Response<RegisterResponse>
             ) {
+                Log.e(LoginViewModel.TAG, "masuk response")
                 isLoading.postValue(false)
                 if (response.isSuccessful) {
+                    Log.e(LoginViewModel.TAG, "masuk sukses")
                     val responseBody = response.body()
                     if (responseBody != null) {
                         isSuccess.postValue(true)
                     }
                 } else {
+                    Log.e(LoginViewModel.TAG, "masuk gagal")
                     val errorMessage :String = response.message().ifEmpty {
                         when (val statusCode = response.code()) {
                             ResponseStatus.BAD_REQUEST.stat -> "$statusCode : Bad Request"
@@ -46,6 +49,7 @@ class RegisterViewModel: ViewModel() {
             }
 
             override fun onFailure(call: Call<RegisterResponse>, t: Throwable) {
+                Log.e(LoginViewModel.TAG, "masuk failure")
                 isLoading.postValue(false)
                 stringError.postValue(t.message)
                 Log.e(LoginViewModel.TAG, t.message.toString())

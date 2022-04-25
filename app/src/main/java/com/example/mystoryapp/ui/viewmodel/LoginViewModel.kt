@@ -2,6 +2,7 @@ package com.example.mystoryapp.ui.viewmodel
 
 import android.util.Log
 import androidx.lifecycle.*
+import com.example.mystoryapp.R
 import com.example.mystoryapp.ResponseStatus
 import com.example.mystoryapp.data.Story
 import com.example.mystoryapp.data.User
@@ -9,6 +10,7 @@ import com.example.mystoryapp.data.local.SessionManager
 import com.example.mystoryapp.data.remote.response.ListStoryItem
 import com.example.mystoryapp.data.remote.response.LoginResponse
 import com.example.mystoryapp.data.remote.retrofit.ApiConfig
+import com.example.mystoryapp.ui.activity.LoginActivity
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -26,36 +28,33 @@ class LoginViewModel : ViewModel() {
                 call: Call<LoginResponse>,
                 response: Response<LoginResponse>
             ) {
-                if (response.isSuccessful) {
-                    val responseBody = response.body()
-                    if (responseBody != null) {
-                        user.postValue(User(
-                            responseBody.loginResult.name,
-                            email,
-                            pass,
-                            responseBody.loginResult.token)
-                        )
-//                        }
-                        isLoading.postValue(false)
-                        Log.e(TAG, "masuk cek respon setelah courutine")
-                        Log.e(TAG, responseBody.loginResult.token)
-                    }
+                Log.e(TAG, "masuk response")
+                Log.e(TAG, response.message())
+                val responseBody = response.body()
+                isLoading.postValue(false)
+                if (response.isSuccessful && responseBody != null){
+                    Log.e(TAG, "respons sukses")
+                    user.postValue(User(
+                        responseBody.loginResult.name,
+                        email,
+                        pass,
+                        responseBody.loginResult.token)
+                    )
+                    Log.e(TAG, responseBody.loginResult.token)
+                } else if (responseBody != null){
+                    Log.e(TAG, "respons gagal")
+                    val errorMsg: String = responseBody.message
+                    stringError.postValue(errorMsg)
                 } else {
-                    val errorMessage :String = response.message().ifEmpty {
-                        when (val statusCode = response.code()) {
-                            ResponseStatus.BAD_REQUEST.stat -> "$statusCode : Bad Request"
-                            ResponseStatus.FORBIDDEN.stat -> "$statusCode : Forbidden"
-                            ResponseStatus.NOT_FOUND.stat -> "$statusCode : Not Found"
-                            else -> "$statusCode"
-                        }
-                    }
-                    stringError.postValue(errorMessage)
+                    Log.e(TAG, "respons kosong euy")
+                    stringError.postValue(response.message().toString())
                 }
             }
 
             override fun onFailure(call: Call<LoginResponse>, t: Throwable) {
+                Log.e(LoginActivity.TAG, "gagal response")
                 isLoading.postValue(false)
-                stringError.postValue(t.message)
+                stringError.postValue(R.string.autentication_failed.toString())
                 Log.e(TAG, t.message.toString())
                 t.printStackTrace()
             }

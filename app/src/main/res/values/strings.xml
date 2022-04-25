@@ -26,4 +26,7 @@
     <string name="caption_image">deskripsi gambar</string>
     <string name="story_photo">foto story</string>
     <string name="detail_story">Detail Story</string>
+    <string name="password">Password</string>
+    <string name="email_address">Email Address</string>
+    <string name="caption_is_null">Silahkan isi caption terlebih dahulu</string>
 </resources>

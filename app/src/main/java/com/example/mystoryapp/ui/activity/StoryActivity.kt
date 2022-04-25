@@ -1,23 +1,27 @@
 package com.example.mystoryapp.ui.activity
 
+import android.Manifest
 import android.content.Intent
 import android.content.Intent.ACTION_GET_CONTENT
+import android.content.pm.PackageManager
 import android.graphics.Bitmap
+import android.graphics.Bitmap.CompressFormat
 import android.graphics.BitmapFactory
 import android.net.Uri
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.provider.MediaStore
+import android.os.Environment
+import android.view.View
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.core.content.FileProvider
-import androidx.lifecycle.ViewModelProvider
+import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import com.example.mystoryapp.R
 import com.example.mystoryapp.data.local.SessionManager
 import com.example.mystoryapp.data.remote.response.PostStoryResponse
 import com.example.mystoryapp.data.remote.retrofit.ApiConfig
 import com.example.mystoryapp.databinding.ActivityStoryBinding
-import com.example.mystoryapp.ui.viewmodel.LoginViewModel
+import com.example.mystoryapp.rotateBitmap
 import com.example.mystoryapp.uriToFile
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
@@ -31,27 +35,45 @@ import java.io.ByteArrayOutputStream
 import java.io.File
 import java.io.FileOutputStream
 
+
 class StoryActivity : AppCompatActivity() {
     private lateinit var sessionManager: SessionManager
     private lateinit var binding: ActivityStoryBinding
+    //    private lateinit var cameraExecutor: ExecutorService
+//    private var cameraSelector: CameraSelector = CameraSelector.DEFAULT_BACK_CAMERA
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityStoryBinding.inflate(layoutInflater)
         setContentView(binding.root)
         sessionManager = SessionManager(this)
 
-        binding.cameraButton.setOnClickListener { startTakePhoto() }
+        binding.progressBar.visibility = View.INVISIBLE
+
+        if (!allPermissionsGranted()) {
+            ActivityCompat.requestPermissions(
+                this,
+                REQUIRED_PERMISSIONS,
+                REQUEST_CODE_PERMISSIONS
+            )
+        }
+//        cameraExecutor = Executors.newSingleThreadExecutor()
+
+        binding.cameraButton.setOnClickListener {
+//            cameraSelector = if (cameraSelector.equals(CameraSelector.DEFAULT_BACK_CAMERA)) CameraSelector.DEFAULT_FRONT_CAMERA
+//            else CameraSelector.DEFAULT_BACK_CAMERA
+            startCameraX() }
         binding.galleryButton.setOnClickListener { startGallery() }
         binding.uploadButton.setOnClickListener { uploadImage() }
+
+
     }
 
     private fun uploadImage() {
-//        Toast.makeText(this, "Fitur ini belum tersedia", Toast.LENGTH_SHORT).show()
-        if (getFile != null) {
+        binding.progressBar.visibility = View.VISIBLE
+        if (getFile != null && binding.edtDesc.text.toString() != "") {
             val file = reduceFileImage(getFile as File)
-            val text = binding.edtDesc.text
-            val desc = text.toString().toRequestBody("text/plain".toMediaType())
-//            val description = desc.toString().toRequestBody("text/plain".toMediaType())
+            val text = binding.edtDesc.text.toString()
+            val desc = text.toRequestBody("text/plain".toMediaType())
             val requestImageFile = file.asRequestBody("image/jpeg".toMediaTypeOrNull())
             val imageMultipart: MultipartBody.Part = MultipartBody.Part.createFormData(
                 "photo",
@@ -65,6 +87,7 @@ class StoryActivity : AppCompatActivity() {
                     call: Call<PostStoryResponse>,
                     response: Response<PostStoryResponse>
                 ) {
+                    binding.progressBar.visibility = View.INVISIBLE
                     if (response.isSuccessful) {
                         val responseBody = response.body()
                         if (responseBody != null && !responseBody.error) {
@@ -78,11 +101,14 @@ class StoryActivity : AppCompatActivity() {
                     }
                 }
                 override fun onFailure(call: Call<PostStoryResponse>, t: Throwable) {
+                    binding.progressBar.visibility = View.INVISIBLE
                     Toast.makeText(this@StoryActivity, getString(R.string.retrofit_instance_failed), Toast.LENGTH_SHORT).show()
                 }
             })
         } else {
-            Toast.makeText(this@StoryActivity, getString(R.string.picture_not_found), Toast.LENGTH_SHORT).show()
+            binding.progressBar.visibility = View.INVISIBLE
+            if(getFile == null) Toast.makeText(this@StoryActivity, getString(R.string.picture_not_found), Toast.LENGTH_SHORT).show()
+            if(binding.edtDesc.text.toString() == "") Toast.makeText(this@StoryActivity, getString(R.string.caption_is_null), Toast.LENGTH_SHORT).show()
         }
     }
 
@@ -94,39 +120,28 @@ class StoryActivity : AppCompatActivity() {
         launcherIntentGallery.launch(chooser)
     }
 
-    private fun startTakePhoto() {
-        val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
-        intent.resolveActivity(packageManager)
-        com.example.mystoryapp.createTempFile(application).also {
-            val photoURI: Uri = FileProvider.getUriForFile(
-                this@StoryActivity,
-                "com.example.mystoryapp",
-                it
-            )
-            currentPhotoPath = it.absolutePath
-            intent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI)
-            launcherIntentCamera.launch(intent)
-        }
-    }
+//    private fun startTakePhoto() {
+//        val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+//        intent.resolveActivity(packageManager)
+//        com.example.mystoryapp.createTempFile(application).also {
+//            val photoURI: Uri = FileProvider.getUriForFile(
+//                this@StoryActivity,
+//                "com.example.mystoryapp",
+//                it
+//            )
+//            currentPhotoPath = it.absolutePath
+//            intent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI)
+////            intent.putExtra("isBackCamera", cameraSelector == CameraSelector.DEFAULT_BACK_CAMERA)
+//            launcherIntentCamera.launch(intent)
+//        }
+//    }
 
     private fun startCameraX() {
-        Toast.makeText(this, "Fitur ini belum tersedia", Toast.LENGTH_SHORT).show()
+        val intent = Intent(this, CameraActivity::class.java)
+        launcherIntentCameraX.launch(intent)
     }
 
-    private lateinit var currentPhotoPath: String
     private var getFile: File? = null
-    private val launcherIntentCamera = registerForActivityResult(
-        ActivityResultContracts.StartActivityForResult()
-    ) {
-        if (it.resultCode == RESULT_OK) {
-            val myFile = File(currentPhotoPath)
-            getFile = myFile
-
-            val result = BitmapFactory.decodeFile(myFile.path)
-
-            binding.previewImageView.setImageBitmap(result)
-        }
-    }
 
     private val launcherIntentGallery = registerForActivityResult(
         ActivityResultContracts.StartActivityForResult()
@@ -136,6 +151,36 @@ class StoryActivity : AppCompatActivity() {
             val myFile = uriToFile(selectedImg, this@StoryActivity)
             getFile = myFile
             binding.previewImageView.setImageURI(selectedImg)
+        }
+    }
+
+    private val launcherIntentCameraX = registerForActivityResult(
+        ActivityResultContracts.StartActivityForResult()
+    ) {
+        if (it.resultCode == CAMERA_X_RESULT) {
+            val myFile = it.data?.getSerializableExtra("picture") as File
+            val isBackCamera = it.data?.getBooleanExtra("isBackCamera", true) as Boolean
+            val result = rotateBitmap(
+                BitmapFactory.decodeFile(myFile.path),
+                isBackCamera
+            )
+
+            //convert bitmap to File!
+            val f = File(this.cacheDir, myFile.name)
+            f.createNewFile()
+
+            val bos = ByteArrayOutputStream()
+            result.compress(CompressFormat.PNG, 0, bos)
+            val bitmapData = bos.toByteArray()
+
+            val fos = FileOutputStream(f)
+            fos.write(bitmapData)
+            fos.flush()
+            fos.close()
+
+            getFile = f
+            binding.previewImageView.setImageBitmap(result)
+
         }
     }
 
@@ -154,4 +199,33 @@ class StoryActivity : AppCompatActivity() {
         return file
     }
 
+//    camera x
+
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<String>,
+        grantResults: IntArray
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        if (requestCode == REQUEST_CODE_PERMISSIONS) {
+            if (!allPermissionsGranted()) {
+                Toast.makeText(
+                    this,
+                    "Tidak mendapatkan permission.",
+                    Toast.LENGTH_SHORT
+                ).show()
+                finish()
+            }
+        }
+    }
+
+    private fun allPermissionsGranted() = REQUIRED_PERMISSIONS.all {
+        ContextCompat.checkSelfPermission(baseContext, it) == PackageManager.PERMISSION_GRANTED
+    }
+
+    companion object {
+        const val CAMERA_X_RESULT = 200
+        private val REQUIRED_PERMISSIONS = arrayOf(Manifest.permission.CAMERA)
+        private const val REQUEST_CODE_PERMISSIONS = 10
+    }
 }

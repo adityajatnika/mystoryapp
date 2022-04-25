@@ -23,7 +23,6 @@ class ListStoryAdapter(private val listStory: List<Story>) : RecyclerView.Adapte
     class ListViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         var imgPhoto: ImageView = itemView.findViewById(R.id.img_item_photo)
         var tvName: TextView = itemView.findViewById(R.id.tv_item_name)
-        //        var tvUsername: TextView = itemView.findViewById(R.id.tv_item_username)
         fun bind(story: Story) {
             Glide.with(itemView.context)
                 .load(story.photo)
