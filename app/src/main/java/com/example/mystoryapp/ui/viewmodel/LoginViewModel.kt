@@ -1,6 +1,5 @@
 package com.example.mystoryapp.ui.viewmodel
 
-import android.util.Log
 import androidx.lifecycle.*
 import com.example.mystoryapp.R
 import com.example.mystoryapp.data.User
@@ -13,7 +12,7 @@ import retrofit2.Response
 class LoginViewModel : ViewModel() {
     val user = MutableLiveData<User>()
     val isLoading = MutableLiveData(false)
-    val stringError = MutableLiveData<String>()
+    val stringError = MutableLiveData<String?>()
 
     fun postLogin(email : String, pass : String){
         isLoading.postValue(true)
@@ -23,7 +22,6 @@ class LoginViewModel : ViewModel() {
                 call: Call<LoginResponse>,
                 response: Response<LoginResponse>
             ) {
-                Log.e(TAG, response.message())
                 val responseBody = response.body()
                 isLoading.postValue(false)
                 if (response.isSuccessful && responseBody != null){
@@ -33,10 +31,8 @@ class LoginViewModel : ViewModel() {
                         pass,
                         responseBody.loginResult.token)
                     )
-                    Log.e(TAG, responseBody.loginResult.token)
                 } else if (responseBody != null){
-                    val errorMsg: String = responseBody.message
-                    stringError.postValue(errorMsg)
+                    stringError.postValue(responseBody.message)
                 } else {
                     stringError.postValue(response.message().toString())
                 }
@@ -45,12 +41,8 @@ class LoginViewModel : ViewModel() {
             override fun onFailure(call: Call<LoginResponse>, t: Throwable) {
                 isLoading.postValue(false)
                 stringError.postValue(R.string.authentication_failed.toString())
-                Log.e(TAG, t.message.toString())
                 t.printStackTrace()
             }
         })
-    }
-    companion object {
-        val TAG: String = LoginViewModel::class.java.simpleName
     }
 }

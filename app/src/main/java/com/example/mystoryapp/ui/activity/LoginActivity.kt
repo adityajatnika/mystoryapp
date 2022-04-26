@@ -30,7 +30,7 @@ class LoginActivity : AppCompatActivity() {
         if (intent.getParcelableExtra<User>(EXTRA_LOGIN) != null){
             user = intent.getParcelableExtra<User>(EXTRA_LOGIN) as User
         }
-
+        setUpView()
         binding.apply {
             progressBar.visibility = View.INVISIBLE
             edtEmail.setText(user?.email)
@@ -38,10 +38,10 @@ class LoginActivity : AppCompatActivity() {
             btnToRegister.setOnClickListener {
                 val intent = Intent(this@LoginActivity, RegisterActivity::class.java)
                 startActivity(intent)
+                finish()
             }
 
             btnLogin.setOnClickListener{
-                setUpView()
                 if(edtEmail.text.toString() == "" || edtEmail.text.toString() == "" ){
                     Toast.makeText(this@LoginActivity, getString(R.string.incomplete_form), Toast.LENGTH_SHORT).show()
                 } else {
@@ -52,7 +52,6 @@ class LoginActivity : AppCompatActivity() {
     }
 
     private fun setUpView() {
-
         viewModel.isLoading.observe(this) {
             binding.progressBar.visibility = if (it) {
                 View.VISIBLE
@@ -66,7 +65,9 @@ class LoginActivity : AppCompatActivity() {
                 sessionManager.saveUserInfo(it.name, it.email, it.password)
                 sessionManager.saveAuthToken(it.token)
                 val intent = Intent(this@LoginActivity, MainActivity::class.java)
+                intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
                 startActivity(intent)
+                finish()
             }
         }
 
@@ -78,7 +79,6 @@ class LoginActivity : AppCompatActivity() {
     }
 
     companion object {
-        val TAG: String = LoginActivity::class.java.simpleName
         const val EXTRA_LOGIN = "extra_login"
     }
 }

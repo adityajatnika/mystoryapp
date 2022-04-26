@@ -28,6 +28,7 @@ class RegisterActivity : AppCompatActivity(), View.OnClickListener {
         binding.btnToLogin.setOnClickListener(this)
         binding.btnRegister.setOnClickListener(this)
         binding.progressBar.visibility = View.INVISIBLE
+        setUpView()
     }
 
     override fun onClick(v: View?) {
@@ -35,9 +36,9 @@ class RegisterActivity : AppCompatActivity(), View.OnClickListener {
             R.id.btn_toLogin -> {
                 val intent = Intent(this@RegisterActivity, LoginActivity::class.java)
                 startActivity(intent)
+                finish()
             }
             R.id.btn_register -> {
-                setUpView()
                 binding.apply {
                     if(edtEmail.text.toString() == "" || edtEmail.text.toString() == "" ){
                         Toast.makeText(this@RegisterActivity, getString(R.string.incomplete_form), Toast.LENGTH_SHORT).show()

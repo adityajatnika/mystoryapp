@@ -52,7 +52,6 @@ class MainViewModel : ViewModel(){
                         }
                     }
                     stringError.postValue(errorMessage)
-                    Log.e(LoginViewModel.TAG, errorMessage)
                 }
             }
 

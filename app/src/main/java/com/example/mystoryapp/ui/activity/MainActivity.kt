@@ -5,7 +5,6 @@ import android.content.res.Configuration
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.provider.Settings
-import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
@@ -44,7 +43,6 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
 
     private fun loadPage(viewModel: MainViewModel) {
         val token = sessionManager.fetchAuthToken()
-        Log.e(TAG, token.toString())
         if(token != null){
             viewModel.getListStory(token)
         }  else {
@@ -115,9 +113,5 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
             }
             else -> true
         }
-    }
-
-    companion object {
-        val TAG: String = MainActivity::class.java.simpleName
     }
 }

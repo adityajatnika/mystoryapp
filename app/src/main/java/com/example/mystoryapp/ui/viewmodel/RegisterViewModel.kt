@@ -1,6 +1,5 @@
 package com.example.mystoryapp.ui.viewmodel
 
-import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.mystoryapp.ResponseStatus
@@ -40,18 +39,14 @@ class RegisterViewModel: ViewModel() {
                         }
                     }
                     stringError.postValue(errorMessage)
-                    Log.e(LoginViewModel.TAG, errorMessage)
                 }
             }
 
             override fun onFailure(call: Call<RegisterResponse>, t: Throwable) {
                 isLoading.postValue(false)
                 stringError.postValue(t.message)
-                Log.e(LoginViewModel.TAG, t.message.toString())
                 t.printStackTrace()
             }
         })
     }
-
-
 }
