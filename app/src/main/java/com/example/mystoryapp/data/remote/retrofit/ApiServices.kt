@@ -18,15 +18,15 @@ interface ApiServices {
     ): Call<RegisterResponse>
 
     @GET("stories")
-    fun getStories(
+    suspend fun getStories(
         @Header("Authorization") token : String,
         @Query("location") loc: Int = 0,
-        @Query("page") page: Int = 0,
-        @Query("size") size: Int = 10,
-    ): Call<StoryResponse>
+        @Query("page") page: Int,
+        @Query("size") size: Int,
+    ): StoryResponse<ListStoryItem>
 
-    @GET("stories?location=1")
-    fun getStoriesLocOn(@Header("Authorization") token : String ): Call<StoryResponse>
+//    @GET("stories?location=1")
+//    fun getStoriesLocOn(@Header("Authorization") token : String ): Call<StoryResponse<ListStoryItem>>
 
     @Multipart
     @POST("stories")

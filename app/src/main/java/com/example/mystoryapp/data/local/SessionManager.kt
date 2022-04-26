@@ -3,12 +3,14 @@ package com.example.mystoryapp.data.local
 import android.content.Context
 import android.content.SharedPreferences
 import com.example.mystoryapp.R
+import com.example.mystoryapp.data.StoryPagingSource
 
 /**
  * Session manager to save and fetch data from SharedPreferences
  */
-class SessionManager (context: Context) {
-    private var prefs: SharedPreferences = context.getSharedPreferences(context.getString(R.string.app_name), Context.MODE_PRIVATE)
+class SessionManager(context: Context) {
+    private var prefs: SharedPreferences = context.getSharedPreferences(context.getString(R.string.app_name),
+        Context.MODE_PRIVATE)
 
     companion object {
         const val USER_TOKEN = "user_token"

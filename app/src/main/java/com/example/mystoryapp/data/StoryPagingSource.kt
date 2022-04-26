@@ -1,29 +1,29 @@
 package com.example.mystoryapp.data
 
+import android.content.Context
 import android.util.Log
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
-import com.example.mystoryapp.ResponseStatus
 import com.example.mystoryapp.data.remote.retrofit.ApiServices
 import com.example.mystoryapp.data.local.SessionManager
 import com.example.mystoryapp.data.remote.response.ListStoryItem
 import com.example.mystoryapp.data.remote.response.StoryResponse
-import com.example.mystoryapp.ui.viewmodel.MainViewModel
+import com.example.mystoryapp.ui.activity.MySuperAppApplication.Companion.context
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import java.lang.StringBuilder
 
-class StoryPagingSource(private val apiService: ApiServices) : PagingSource<Int, ListStoryItem>() {
-    private lateinit var sessionManager: SessionManager
+class StoryPagingSource(private val apiService: ApiServices, private val token: String) : PagingSource<Int, ListStoryItem>() {
 
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, ListStoryItem> {
         return try {
             Log.e(this.toString(), "sampai pagingsource")
             val position = params.key ?: INITIAL_PAGE_INDEX
-            val token = sessionManager.fetchAuthToken()
-            val responseData = apiService.getStories(StringBuilder("Bearer ").append(token).toString(), 1, position, 10)
-            val data = responseData.execute().body()!!.listStory
+            Log.e(this.toString(), "sampai ayok")
+            val responseData = apiService.getStories(StringBuilder("Bearer ").append(token).toString(),1, position, params.loadSize)
+            val data = responseData.listStory
+            Log.e(this.toString(), "sesudah")
 
             LoadResult.Page(
                 data = data,

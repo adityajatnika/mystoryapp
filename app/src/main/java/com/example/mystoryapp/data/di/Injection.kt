@@ -1,7 +1,7 @@
 package com.example.mystoryapp.data.di
 
 import android.content.Context
-import com.example.mystoryapp.data.StoryDatabase
+import com.example.mystoryapp.data.local.room.StoryDatabase
 import com.example.mystoryapp.data.StoryRepository
 import com.example.mystoryapp.data.remote.retrofit.ApiConfig
 

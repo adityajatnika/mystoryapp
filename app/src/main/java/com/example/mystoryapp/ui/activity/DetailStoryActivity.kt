@@ -5,6 +5,7 @@ import android.os.Bundle
 import com.bumptech.glide.Glide
 import com.example.mystoryapp.R
 import com.example.mystoryapp.data.Story
+import com.example.mystoryapp.data.remote.response.ListStoryItem
 import com.example.mystoryapp.databinding.ActivityDetailStoryBinding
 
 class DetailStoryActivity : AppCompatActivity() {
@@ -24,12 +25,12 @@ class DetailStoryActivity : AppCompatActivity() {
 
     private fun setUpView() {
         binding.apply {
-            val story = intent.getParcelableExtra<Story>(EXTRA_STORY) as Story
+            val story = intent.getParcelableExtra<Story>(EXTRA_STORY) as ListStoryItem
             Glide.with(applicationContext)
-                .load(story.photo)
+                .load(story.photoUrl)
                 .into(imgPhoto)
             tvName.text = story.name
-            tvDesc.text = story.desc
+            tvDesc.text = story.description
         }
     }
 

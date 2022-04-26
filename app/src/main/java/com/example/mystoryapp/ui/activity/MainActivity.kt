@@ -1,29 +1,46 @@
 package com.example.mystoryapp.ui.activity
 
+import android.app.Activity
+import android.app.Application
 import android.content.ContentValues.TAG
+import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import android.content.res.Configuration
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.provider.Settings
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
-import android.widget.Toast
 import androidx.activity.viewModels
-import androidx.lifecycle.LiveData
-import androidx.paging.PagingData
+import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.mystoryapp.R
+import com.example.mystoryapp.data.StoryPagingSource
 import com.example.mystoryapp.data.local.SessionManager
-import com.example.mystoryapp.data.remote.response.ListStoryItem
+import com.example.mystoryapp.data.remote.retrofit.ApiConfig
 import com.example.mystoryapp.databinding.ActivityMainBinding
 import com.example.mystoryapp.ui.adapter.ListStoryAdapter
+import com.example.mystoryapp.ui.adapter.LoadingStateAdapter
 import com.example.mystoryapp.ui.viewmodel.MainViewModel
 import com.example.mystoryapp.ui.viewmodel.ViewModelFactory
+import com.google.android.material.internal.ContextUtils.getActivity
 
+
+class MySuperAppApplication : Application() {
+    override fun onCreate() {
+        super.onCreate()
+        instance = this
+    }
+
+    companion object {
+        private var instance: Application? = null
+        val context: Context
+            get() = instance!!.applicationContext
+    }
+}
 
 class MainActivity : AppCompatActivity(), View.OnClickListener {
     private lateinit var sessionManager: SessionManager
@@ -41,32 +58,46 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        instance = this
+
         sessionManager = SessionManager(this)
         binding.btnAdd.setOnClickListener(this)
         binding.rvStory.setHasFixedSize(true)
 
-        setUpView(viewModel)
+        setUpView()
 //        loadPage(viewModel)
         getData()
     }
 
+
     private fun getData() {
+
+        //Save token here
+        //Save token here
+//        val token = "Some token From Server"
+//        val preferences: SharedPreferences =
+//            getActivity(this@MainActivity).getSharedPreferences("MY_APP", Context.MODE_PRIVATE)
+//        preferences.edit().putString("TOKEN", token).apply()
+
         val token = sessionManager.fetchAuthToken()
         binding.progressBar.visibility = View.INVISIBLE
         if(token != null){
             Log.e(TAG, "sampai getdata main")
             val adapter = ListStoryAdapter()
-            binding.rvStory.adapter = adapter
-            viewModel.story.observe(this, {
+            binding.rvStory.adapter = adapter.withLoadStateFooter(
+                footer = LoadingStateAdapter {
+                    adapter.retry()
+                }
+            )
+            viewModel.story.observe(this) {
                 adapter.submitData(lifecycle, it)
-            })
+            }
 
         } else {
             val intent = Intent(this@MainActivity, LoginActivity::class.java)
             startActivity(intent)
             finish()
         }
-
     }
 //
 //    private fun loadPage(viewModel: MainViewModel) {
@@ -80,7 +111,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
 //        }
 //    }
 
-    private fun setUpView(viewModel: MainViewModel) {
+    private fun setUpView() {
         if (applicationContext.resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE) {
             binding.rvStory.layoutManager = GridLayoutManager(this, 2)
         } else {
@@ -141,5 +172,10 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
             }
             else -> true
         }
+    }
+    companion object{
+        private var instance: AppCompatActivity? = null
+        val context: Context
+            get() = instance!!.baseContext
     }
 }
