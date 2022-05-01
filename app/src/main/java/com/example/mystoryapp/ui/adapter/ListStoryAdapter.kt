@@ -14,16 +14,20 @@ import com.example.mystoryapp.R
 import com.example.mystoryapp.data.Story
 import com.example.mystoryapp.ui.activity.DetailStoryActivity
 import androidx.core.util.Pair
+import androidx.paging.PagingData
+import androidx.paging.PagingDataAdapter
+import androidx.recyclerview.widget.DiffUtil
+import com.example.mystoryapp.data.remote.response.ListStoryItem
 
-class ListStoryAdapter(private val listStory: List<Story>) : RecyclerView.Adapter<ListStoryAdapter.ListViewHolder>() {
+class ListStoryAdapter: PagingDataAdapter<ListStoryItem, ListStoryAdapter.ListViewHolder>(DIFF_CALLBACK) {
 
 
     class ListViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         private var imgPhoto: ImageView = itemView.findViewById(R.id.img_item_photo)
         private var tvName: TextView = itemView.findViewById(R.id.tv_item_name)
-        fun bind(story: Story) {
+        fun bind(story: ListStoryItem) {
             Glide.with(itemView.context)
-                .load(story.photo)
+                .load(story.photoUrl)
                 .into(imgPhoto)
             tvName.text = story.name
 
@@ -46,10 +50,38 @@ class ListStoryAdapter(private val listStory: List<Story>) : RecyclerView.Adapte
         val view: View = LayoutInflater.from(parent.context).inflate(R.layout.item_row_story, parent, false)
         return ListViewHolder(view)
     }
+//
+//    override fun onBindViewHolder(holder: ListViewHolder, position: Int) {
+//        holder.bind(listStory[position])
+//    }
+//
+//    override fun getItemCount(): Int = listStory.size
+
 
     override fun onBindViewHolder(holder: ListViewHolder, position: Int) {
-        holder.bind(listStory[position])
+        val data = getItem(position)
+        if (data != null) {
+            holder.bind(data)
+        }
     }
 
-    override fun getItemCount(): Int = listStory.size
+//    class MyViewHolder(private val binding: ItemQuoteBinding) :
+//        RecyclerView.ViewHolder(binding.root) {
+//        fun bind(data: QuoteResponseItem) {
+//            binding.tvItemQuote.text = data.en
+//            binding.tvItemAuthor.text = data.author
+//        }
+//    }
+
+    companion object {
+        private val DIFF_CALLBACK = object : DiffUtil.ItemCallback<ListStoryItem>() {
+            override fun areItemsTheSame(oldItem: ListStoryItem, newItem: ListStoryItem): Boolean {
+                return oldItem == newItem
+            }
+
+            override fun areContentsTheSame(oldItem: ListStoryItem, newItem: ListStoryItem): Boolean {
+                return oldItem.id == newItem.id
+            }
+        }
+    }
 }

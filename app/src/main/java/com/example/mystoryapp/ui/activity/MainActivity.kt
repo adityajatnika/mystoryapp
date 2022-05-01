@@ -1,27 +1,35 @@
 package com.example.mystoryapp.ui.activity
 
+import android.content.ContentValues.TAG
 import android.content.Intent
 import android.content.res.Configuration
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.provider.Settings
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.widget.Toast
 import androidx.activity.viewModels
+import androidx.lifecycle.LiveData
+import androidx.paging.PagingData
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.mystoryapp.R
 import com.example.mystoryapp.data.local.SessionManager
+import com.example.mystoryapp.data.remote.response.ListStoryItem
 import com.example.mystoryapp.databinding.ActivityMainBinding
 import com.example.mystoryapp.ui.adapter.ListStoryAdapter
 import com.example.mystoryapp.ui.viewmodel.MainViewModel
+import com.example.mystoryapp.ui.viewmodel.ViewModelFactory
 
 
 class MainActivity : AppCompatActivity(), View.OnClickListener {
     private lateinit var sessionManager: SessionManager
-    private val viewModel: MainViewModel by viewModels()
+    private val viewModel: MainViewModel by viewModels {
+        ViewModelFactory(this)
+    }
     private lateinit var binding: ActivityMainBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -38,19 +46,39 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         binding.rvStory.setHasFixedSize(true)
 
         setUpView(viewModel)
-        loadPage(viewModel)
+//        loadPage(viewModel)
+        getData()
     }
 
-    private fun loadPage(viewModel: MainViewModel) {
+    private fun getData() {
         val token = sessionManager.fetchAuthToken()
+        binding.progressBar.visibility = View.INVISIBLE
         if(token != null){
-            viewModel.getListStory(token)
-        }  else {
+            Log.e(TAG, "sampai getdata main")
+            val adapter = ListStoryAdapter()
+            binding.rvStory.adapter = adapter
+            viewModel.story.observe(this, {
+                adapter.submitData(lifecycle, it)
+            })
+
+        } else {
             val intent = Intent(this@MainActivity, LoginActivity::class.java)
             startActivity(intent)
             finish()
         }
+
     }
+//
+//    private fun loadPage(viewModel: MainViewModel) {
+//        val token = sessionManager.fetchAuthToken()
+//        if(token != null){
+//            viewModel.getListStory(token)
+//        }  else {
+//            val intent = Intent(this@MainActivity, LoginActivity::class.java)
+//            startActivity(intent)
+//            finish()
+//        }
+//    }
 
     private fun setUpView(viewModel: MainViewModel) {
         if (applicationContext.resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE) {
@@ -58,27 +86,27 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         } else {
             binding.rvStory.layoutManager = LinearLayoutManager(this)
         }
-
-        viewModel.isLoading.observe(this) {
-            binding.progressBar.visibility = if (it) {
-                View.VISIBLE
-            } else {
-                View.INVISIBLE
-            }
-        }
-
-        viewModel.story.observe(this) {
-            if(it != null){
-                val adapter = ListStoryAdapter(it)
-                binding.rvStory.adapter = adapter
-            }
-        }
-
-        viewModel.stringError.observe(this){
-            if(it != null){
-                Toast.makeText(this, it, Toast.LENGTH_LONG).show()
-            }
-        }
+//
+//        viewModel.isLoading.observe(this) {
+//            binding.progressBar.visibility = if (it) {
+//                View.VISIBLE
+//            } else {
+//                View.INVISIBLE
+//            }
+//        }
+//
+//        viewModel.story.observe(this) {
+//            if(it != null){
+//                val adapter = ListStoryAdapter(it)
+//                binding.rvStory.adapter = adapter
+//            }
+//        }
+//
+//        viewModel.stringError.observe(this){
+//            if(it != null){
+//                Toast.makeText(this, it, Toast.LENGTH_LONG).show()
+//            }
+//        }
     }
 
     //action bar
@@ -96,7 +124,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             R.id.menu_refresh -> {
-                loadPage(viewModel)
+                getData()
                 true
             }
             R.id.menu_settings -> {

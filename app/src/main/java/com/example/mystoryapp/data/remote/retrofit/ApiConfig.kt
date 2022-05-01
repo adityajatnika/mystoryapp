@@ -1,6 +1,5 @@
 package com.example.mystoryapp.data.remote.retrofit
 
-import com.example.githubuserapp.data.remote.retrofit.ApiServices
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit

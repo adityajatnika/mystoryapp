@@ -1,39 +1,10 @@
-package com.example.githubuserapp.data.remote.retrofit
+package com.example.mystoryapp.data.remote.retrofit
 
-//import com.example.mystoryapp.data.remote.response.DetailUserResponse
-//import com.example.mystoryapp.data.remote.response.FindUserResponse
-//import com.example.mystoryapp.data.remote.response.UserResponse
-import com.example.mystoryapp.data.remote.response.LoginResponse
-import com.example.mystoryapp.data.remote.response.PostStoryResponse
-import com.example.mystoryapp.data.remote.response.RegisterResponse
-import com.example.mystoryapp.data.remote.response.StoryResponse
+import com.example.mystoryapp.data.remote.response.*
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import retrofit2.Call
 import retrofit2.http.*
-
-
-//interface ApiServices {
-//    @GET("users")
-//    @Headers("Authorization: token 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")
-//    fun getUsers(): Call<List<UserResponse>>
-//
-//    @GET("search/users")
-//    @Headers("Authorization: token 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")
-//    fun findUsers(@Query("q") query: String): Call<FindUserResponse>
-//
-//    @GET("users/{login}/followers")
-//    @Headers("Authorization: token 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")
-//    fun getFollowers(@Path("login") login : String): Call<List<UserResponse>>
-//
-//    @GET("users/{login}/following")
-//    @Headers("Authorization: token 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")
-//    fun getFollowing(@Path("login") login : String): Call<List<UserResponse>>
-//
-//    @GET("users/{login}")
-//    @Headers("Authorization: token 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")
-//    fun getDetailUser(@Path("login") login : String): Call<DetailUserResponse>
-//}
 
 interface ApiServices {
 
@@ -47,7 +18,15 @@ interface ApiServices {
     ): Call<RegisterResponse>
 
     @GET("stories")
-    fun getStories(@Header("Authorization") token : String ): Call<StoryResponse>
+    fun getStories(
+        @Header("Authorization") token : String,
+        @Query("location") loc: Int = 0,
+        @Query("page") page: Int = 0,
+        @Query("size") size: Int = 10,
+    ): Call<StoryResponse>
+
+    @GET("stories?location=1")
+    fun getStoriesLocOn(@Header("Authorization") token : String ): Call<StoryResponse>
 
     @Multipart
     @POST("stories")
@@ -64,22 +43,4 @@ interface ApiServices {
         @Field("email") email: String,
         @Field("password") password: String,
     ): Call<LoginResponse>
-
-
-
-//    @GET("search/users")
-//    @Headers("Authorization: token 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")
-//    fun findUsers(@Query("q") query: String): Call<FindUserResponse>
-//
-//    @GET("users/{login}/followers")
-//    @Headers("Authorization: token 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")
-//    fun getFollowers(@Path("login") login : String): Call<List<UserResponse>>
-//
-//    @GET("users/{login}/following")
-//    @Headers("Authorization: token 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")
-//    fun getFollowing(@Path("login") login : String): Call<List<UserResponse>>
-//
-//    @GET("users/{login}")
-//    @Headers("Authorization: token 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")
-//    fun getDetailUser(@Path("login") login : String): Call<DetailUserResponse>
 }
