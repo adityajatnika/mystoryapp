@@ -3,7 +3,6 @@ package com.example.mystoryapp.ui.activity
 import android.Manifest
 import android.content.ContentValues.TAG
 import android.content.pm.PackageManager
-import android.location.Location
 import android.os.Bundle
 import android.util.Log
 import android.view.Menu
@@ -29,16 +28,12 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-
-//import com.example.mystoryapp.ui.activity.databinding.ActivityMapsBinding
-
 class MapsActivity : AppCompatActivity(), OnMapReadyCallback{
 
     private lateinit var sessionManager: SessionManager
     private lateinit var mMap: GoogleMap
     private lateinit var binding: ActivityMapsBinding
     private lateinit var marker :  Marker
-//    private lateinit var storyDatabase: StoryDatabase
 
     @OptIn(DelicateCoroutinesApi::class)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -50,7 +45,6 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback{
 
         sessionManager = SessionManager(this)
 
-//        getUserLocation()
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         val mapFragment = supportFragmentManager
             .findFragmentById(R.id.map) as SupportMapFragment
@@ -69,24 +63,12 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback{
     override fun onMapReady(googleMap: GoogleMap) {
 
         mMap = googleMap
-//        mMap.setOnMarkerClickListener(this)
-
         mMap.uiSettings.isZoomControlsEnabled = true
         mMap.uiSettings.isIndoorLevelPickerEnabled = true
         mMap.uiSettings.isCompassEnabled = true
         mMap.uiSettings.isMapToolbarEnabled = true
 
-        // Add a marker in Sydney and move the camera
-//        val sydney = LatLng(-34.0, 151.0)
-//        mMap.addMarker(MarkerOptions().position(sydney).title("Marker in Sydney"))
-
         val dicodingSpace = LatLng(-6.8957643, 107.6338462)
-//        mMap.addMarker(
-//            MarkerOptions()
-//                .position(dicodingSpace)
-//                .title("Dicoding Space")
-//                .snippet("Batik Kumeli No.50")
-//        )
 
         Log.e(TAG, "masuk ke onready dulu")
         getUserLocation()
@@ -155,25 +137,6 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback{
         })
     }
 
-    fun onLocationChanged(location: Location){
-        val lat = location.latitude
-    }
-    //    fun onMarkerClick(marker: Marker): Boolean {
-//        if (marker == mMap) {
-//            //handle click here
-//        }
-//    }
-//    override fun onMarkerClick(v: Marker): Boolean {
-//        if (v == marker) {
-//            val intent = Intent(this@MapsActivity, DetailStoryActivity::class.java)
-//            intent.putExtra(DetailStoryActivity.EXTRA_STORY, marker.)
-//            startActivity()
-//            return true
-//        }else {
-//            return true
-//        }
-//    }
-
     // option menu map
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.option_map, menu)
@@ -202,6 +165,4 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback{
             }
         }
     }
-
-
 }

@@ -3,7 +3,6 @@ package com.example.mystoryapp.ui.activity
 import android.Manifest
 import android.content.ContentValues.TAG
 import android.content.Context
-import android.content.DialogInterface
 import android.content.Intent
 import android.content.Intent.ACTION_GET_CONTENT
 import android.content.pm.PackageManager
@@ -39,7 +38,6 @@ import retrofit2.Response
 import java.io.ByteArrayOutputStream
 import java.io.File
 import java.io.FileOutputStream
-
 
 class StoryActivity : AppCompatActivity() {
     private lateinit var sessionManager: SessionManager
@@ -236,11 +234,13 @@ class StoryActivity : AppCompatActivity() {
     //create for get location
     private fun onGPS() {
         val builder = AlertDialog.Builder(this)
-        builder.setMessage("Enable GPS").setCancelable(false).setPositiveButton("Yes",
-            DialogInterface.OnClickListener { dialog, which -> startActivity(Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS)) })
-            .setNegativeButton("No",
-                DialogInterface.OnClickListener { dialog, which -> dialog.cancel() })
-        val alertDialog: AlertDialog = builder.create()
+        builder.setMessage("Enable GPS").setCancelable(false).setPositiveButton(
+            "Yes"
+        ) { _, _ -> startActivity(Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS)) }
+            .setNegativeButton(
+                "No"
+            ) { dialog, _ -> dialog.cancel() }
+        val alertDialog = builder.create()
         alertDialog.show()
     }
 
@@ -264,7 +264,6 @@ class StoryActivity : AppCompatActivity() {
                 val long: Double = locationGPS.longitude
                 latitude = lat.toString()
                 longitude = long.toString()
-//                showLocation.setText("Your Location: \nLatitude: $latitude\nLongitude: $longitude")
             } else {
                 Toast.makeText(this, "Unable to find location.", Toast.LENGTH_SHORT).show()
             }

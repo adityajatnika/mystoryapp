@@ -26,7 +26,6 @@ class StoryRemoteMediator (
         return InitializeAction.LAUNCH_INITIAL_REFRESH
     }
 
-    //    private lateinit var sessionManager: SessionManager
     override suspend fun load(
         loadType: LoadType,
         state: PagingState<Int, ListStoryItem>
@@ -49,9 +48,6 @@ class StoryRemoteMediator (
                 nextKey
             }
         }
-//        val page = INITIAL_PAGE_INDEX
-//        sessionManager = SessionManager(MainActivity.context)
-//        val token = sessionManager.fetchAuthToken().toString()
         try {
             val responseData = apiService.getStories(
                 token = StringBuilder("Bearer ").append(token).toString(),

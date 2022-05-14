@@ -16,7 +16,6 @@ class SessionManager(context: Context) {
         const val USER_EMAIL = "user_email"
         const val USER_PASS = "user_pass"
         const val USER_NAME = "user_name"
-
     }
 
     /**
