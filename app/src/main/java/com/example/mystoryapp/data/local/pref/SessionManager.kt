@@ -1,9 +1,8 @@
-package com.example.mystoryapp.data.local
+package com.example.mystoryapp.data.local.pref
 
 import android.content.Context
 import android.content.SharedPreferences
 import com.example.mystoryapp.R
-import com.example.mystoryapp.data.StoryPagingSource
 
 /**
  * Session manager to save and fetch data from SharedPreferences

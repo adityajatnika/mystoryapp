@@ -5,11 +5,10 @@ import androidx.paging.LoadType
 import androidx.paging.PagingState
 import androidx.paging.RemoteMediator
 import androidx.room.withTransaction
-import com.example.mystoryapp.data.local.SessionManager
+import com.example.mystoryapp.data.local.room.RemoteKeys
 import com.example.mystoryapp.data.local.room.StoryDatabase
 import com.example.mystoryapp.data.remote.response.ListStoryItem
 import com.example.mystoryapp.data.remote.retrofit.ApiServices
-import com.example.mystoryapp.ui.activity.MainActivity
 import java.lang.StringBuilder
 
 @OptIn(ExperimentalPagingApi::class)

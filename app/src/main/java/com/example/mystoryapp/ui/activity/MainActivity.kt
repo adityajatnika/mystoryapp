@@ -1,11 +1,9 @@
 package com.example.mystoryapp.ui.activity
 
-import android.app.Activity
 import android.app.Application
 import android.content.ContentValues.TAG
 import android.content.Context
 import android.content.Intent
-import android.content.SharedPreferences
 import android.content.res.Configuration
 import android.os.Bundle
 import android.provider.Settings
@@ -18,15 +16,12 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.mystoryapp.R
-import com.example.mystoryapp.data.StoryPagingSource
-import com.example.mystoryapp.data.local.SessionManager
-import com.example.mystoryapp.data.remote.retrofit.ApiConfig
+import com.example.mystoryapp.data.local.pref.SessionManager
 import com.example.mystoryapp.databinding.ActivityMainBinding
 import com.example.mystoryapp.ui.adapter.ListStoryAdapter
 import com.example.mystoryapp.ui.adapter.LoadingStateAdapter
 import com.example.mystoryapp.ui.viewmodel.MainViewModel
 import com.example.mystoryapp.ui.viewmodel.ViewModelFactory
-import com.google.android.material.internal.ContextUtils.getActivity
 
 
 class MySuperAppApplication : Application() {
@@ -154,6 +149,10 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
+            R.id.menu_map -> {
+                startActivity(Intent(this@MainActivity, MapsActivity::class.java))
+                true
+            }
             R.id.menu_refresh -> {
                 getData()
                 true

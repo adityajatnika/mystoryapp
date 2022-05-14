@@ -39,9 +39,15 @@
     <string name="mystory_brand_logo">MystorY brand logo</string>
     <string name="one_more_step">One more step</string>
     <string name="don_t_have_account">Don\'t have account?</string>
-    <string name="register_now">Register now</string>
+    <string name="register_now">Register now!</string>
     <string name="join_now">Join now</string>
     <string name="add_your_story">Add Your Story</string>
     <string name="language">Language</string>
     <string name="retry">Retry</string>
+    <string name="title_activity_maps">MapsActivity</string>
+    <string name="map">Map</string>
+    <string name="normal_type">Normal</string>
+    <string name="satellite_type">Satellite</string>
+    <string name="terrain_type">Terrain</string>
+    <string name="hybrid_type">Hybrid</string>
 </resources>

@@ -1,11 +1,7 @@
 package com.example.mystoryapp.data.remote.retrofit
 
-import android.app.PendingIntent.getActivity
-import android.content.Context
-import android.content.SharedPreferences
-import com.example.mystoryapp.data.local.SessionManager
+import com.example.mystoryapp.data.local.pref.SessionManager
 import com.example.mystoryapp.ui.activity.MainActivity
-import com.example.mystoryapp.ui.activity.MySuperAppApplication.Companion.context
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import okhttp3.Response

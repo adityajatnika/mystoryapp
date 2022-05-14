@@ -41,7 +41,10 @@
     <string name="one_more_step">Satu langkah lagi</string>
     <string name="don_t_have_account">Tidak punya akun?</string>
     <string name="register_now">Daftar sekarang</string>
-    <string name="join_now">Gabung sekarang</string>
+    <string name="join_now">Gabung now</string>
     <string name="add_your_story">Tambah Ceritamu</string>
     <string name="language">Bahasa</string>
+    <string name="retry">Ulangi</string>
+    <string name="title_activity_maps">MapsActivity</string>
+    <string name="map">Peta</string>
 </resources>

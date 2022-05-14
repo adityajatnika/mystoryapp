@@ -1,4 +1,4 @@
-package com.example.mystoryapp.data
+package com.example.mystoryapp.data.local.room
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey

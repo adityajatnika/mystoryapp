@@ -24,6 +24,14 @@ interface ApiServices {
         @Query("page") page: Int,
         @Query("size") size: Int,
     ): StoryResponse<ListStoryItem>
+    
+    @GET("stories")
+    fun getStoriesLocOn(
+        @Header("Authorization") token : String,
+        @Query("location") loc: Int = 1,
+        @Query("page") page: Int,
+        @Query("size") size: Int,
+    ): Call<StoryResponse<ListStoryItem>>
 
 //    @GET("stories?location=1")
 //    fun getStoriesLocOn(@Header("Authorization") token : String ): Call<StoryResponse<ListStoryItem>>
@@ -33,7 +41,9 @@ interface ApiServices {
     fun postStory(
         @Header("Authorization") token: String,
         @Part file: MultipartBody.Part,
-        @Part("description") desc: RequestBody
+        @Part("description") desc: RequestBody,
+        @Part("lat") lat: Float,
+        @Part("lon") lon: Float,
     ): Call<PostStoryResponse>
 
     @FormUrlEncoded

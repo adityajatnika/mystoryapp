@@ -1,21 +1,12 @@
 package com.example.mystoryapp.ui.viewmodel
 
 import android.content.Context
-import android.util.Log
 import androidx.lifecycle.*
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
-import com.example.mystoryapp.ResponseStatus
-import com.example.mystoryapp.data.Story
 import com.example.mystoryapp.data.StoryRepository
 import com.example.mystoryapp.data.di.Injection
-import com.example.mystoryapp.data.local.SessionManager
 import com.example.mystoryapp.data.remote.response.ListStoryItem
-import com.example.mystoryapp.data.remote.response.StoryResponse
-import com.example.mystoryapp.data.remote.retrofit.ApiConfig
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 
 class MainViewModel(storyRepository: StoryRepository) : ViewModel(){
 

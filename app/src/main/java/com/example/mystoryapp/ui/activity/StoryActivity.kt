@@ -1,21 +1,28 @@
 package com.example.mystoryapp.ui.activity
 
 import android.Manifest
+import android.content.ContentValues.TAG
+import android.content.Context
+import android.content.DialogInterface
 import android.content.Intent
 import android.content.Intent.ACTION_GET_CONTENT
 import android.content.pm.PackageManager
 import android.graphics.Bitmap.CompressFormat
 import android.graphics.BitmapFactory
+import android.location.LocationManager
 import android.net.Uri
 import android.os.Bundle
+import android.provider.Settings
+import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.example.mystoryapp.R
-import com.example.mystoryapp.data.local.SessionManager
+import com.example.mystoryapp.data.local.pref.SessionManager
 import com.example.mystoryapp.data.remote.response.PostStoryResponse
 import com.example.mystoryapp.data.remote.retrofit.ApiConfig
 import com.example.mystoryapp.databinding.ActivityStoryBinding
@@ -37,6 +44,12 @@ import java.io.FileOutputStream
 class StoryActivity : AppCompatActivity() {
     private lateinit var sessionManager: SessionManager
     private lateinit var binding: ActivityStoryBinding
+
+    private val REQUEST_LOCATION = 1
+    private lateinit var locationManager: LocationManager
+    var latitude: String? = null
+    var longitude: String? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         supportActionBar?.title = getString(R.string.add_your_story)
@@ -55,6 +68,15 @@ class StoryActivity : AppCompatActivity() {
             )
         }
 
+        locationManager = getSystemService(Context.LOCATION_SERVICE) as LocationManager
+        if (!locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
+            Log.e(TAG, "masuk ongps")
+            onGPS()
+        } else {
+            Log.e(TAG, "masuk getloc")
+            getLocation()
+        }
+
         binding.cameraButton.setOnClickListener {
             startCameraX() }
         binding.galleryButton.setOnClickListener { startGallery() }
@@ -62,6 +84,9 @@ class StoryActivity : AppCompatActivity() {
     }
 
     private fun uploadImage() {
+
+        Log.e(TAG, "tes di camera")
+        Log.e(TAG, latitude.toString())
         binding.progressBar.visibility = View.VISIBLE
         if (getFile != null && binding.edtDesc.text.toString() != "") {
             val file = reduceFileImage(getFile as File)
@@ -74,7 +99,10 @@ class StoryActivity : AppCompatActivity() {
                 requestImageFile
             )
 
-            val service = ApiConfig.getApiService().postStory(token = StringBuilder("Bearer ").append(sessionManager.fetchAuthToken()).toString(), imageMultipart, desc)
+            val service = ApiConfig.getApiService().postStory(
+                token = StringBuilder("Bearer ").append(sessionManager.fetchAuthToken()).toString(),
+                imageMultipart,
+                desc, latitude!!.toFloat(), longitude!!.toFloat())
             service.enqueue(object : Callback<PostStoryResponse> {
                 override fun onResponse(
                     call: Call<PostStoryResponse>,
@@ -203,5 +231,43 @@ class StoryActivity : AppCompatActivity() {
         const val CAMERA_X_RESULT = 200
         private val REQUIRED_PERMISSIONS = arrayOf(Manifest.permission.CAMERA)
         private const val REQUEST_CODE_PERMISSIONS = 10
+    }
+
+    //create for get location
+    private fun onGPS() {
+        val builder = AlertDialog.Builder(this)
+        builder.setMessage("Enable GPS").setCancelable(false).setPositiveButton("Yes",
+            DialogInterface.OnClickListener { dialog, which -> startActivity(Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS)) })
+            .setNegativeButton("No",
+                DialogInterface.OnClickListener { dialog, which -> dialog.cancel() })
+        val alertDialog: AlertDialog = builder.create()
+        alertDialog.show()
+    }
+
+    private fun getLocation() {
+        if (ActivityCompat.checkSelfPermission(
+                this@StoryActivity, Manifest.permission.ACCESS_FINE_LOCATION
+            ) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
+                this@StoryActivity, Manifest.permission.ACCESS_COARSE_LOCATION
+            ) != PackageManager.PERMISSION_GRANTED
+        ) {
+            ActivityCompat.requestPermissions(
+                this,
+                arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),
+                REQUEST_LOCATION
+            )
+        } else {
+            val locationGPS =
+                locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER)
+            if (locationGPS != null) {
+                val lat: Double = locationGPS.latitude
+                val long: Double = locationGPS.longitude
+                latitude = lat.toString()
+                longitude = long.toString()
+//                showLocation.setText("Your Location: \nLatitude: $latitude\nLongitude: $longitude")
+            } else {
+                Toast.makeText(this, "Unable to find location.", Toast.LENGTH_SHORT).show()
+            }
+        }
     }
 }

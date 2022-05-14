@@ -3,7 +3,7 @@ package com.example.mystoryapp.data
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.paging.*
-import com.example.mystoryapp.data.local.SessionManager
+import com.example.mystoryapp.data.local.pref.SessionManager
 import com.example.mystoryapp.data.local.room.StoryDatabase
 import com.example.mystoryapp.data.remote.retrofit.ApiServices
 import com.example.mystoryapp.data.remote.response.ListStoryItem

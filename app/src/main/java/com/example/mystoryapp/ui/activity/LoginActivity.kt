@@ -8,7 +8,7 @@ import android.widget.Toast
 import androidx.activity.viewModels
 import com.example.mystoryapp.R
 import com.example.mystoryapp.data.User
-import com.example.mystoryapp.data.local.SessionManager
+import com.example.mystoryapp.data.local.pref.SessionManager
 import com.example.mystoryapp.databinding.ActivityLoginBinding
 import com.example.mystoryapp.ui.viewmodel.LoginViewModel
 
