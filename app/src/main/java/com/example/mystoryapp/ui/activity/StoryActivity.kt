@@ -45,8 +45,8 @@ class StoryActivity : AppCompatActivity() {
 
     private val REQUEST_LOCATION = 1
     private lateinit var locationManager: LocationManager
-    var latitude: String? = null
-    var longitude: String? = null
+    private var latitude: String? = null
+    private var longitude: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -85,23 +85,34 @@ class StoryActivity : AppCompatActivity() {
 
         Log.e(TAG, "tes di camera")
         Log.e(TAG, latitude.toString())
+
         binding.progressBar.visibility = View.VISIBLE
         if (getFile != null && binding.edtDesc.text.toString() != "") {
             val file = reduceFileImage(getFile as File)
             val text = binding.edtDesc.text.toString()
             val desc = text.toRequestBody("text/plain".toMediaType())
             val requestImageFile = file.asRequestBody("image/jpeg".toMediaTypeOrNull())
+            val services: Call<PostStoryResponse>
             val imageMultipart: MultipartBody.Part = MultipartBody.Part.createFormData(
                 "photo",
                 file.name,
                 requestImageFile
             )
 
-            val service = ApiConfig.getApiService().postStory(
-                token = StringBuilder("Bearer ").append(sessionManager.fetchAuthToken()).toString(),
-                imageMultipart,
-                desc, latitude!!.toFloat(), longitude!!.toFloat())
-            service.enqueue(object : Callback<PostStoryResponse> {
+            services = if (latitude != null && longitude != null){
+                ApiConfig.getApiService().postStoryLocOn(
+                    token = StringBuilder("Bearer ").append(sessionManager.fetchAuthToken()).toString(),
+                    imageMultipart,
+                    desc, latitude!!.toFloat(), longitude!!.toFloat())
+            } else {
+                ApiConfig.getApiService().postStory(
+                    token = StringBuilder("Bearer ").append(sessionManager.fetchAuthToken()).toString(),
+                    imageMultipart,
+                    desc)
+            }
+
+
+            services.enqueue(object : Callback<PostStoryResponse> {
                 override fun onResponse(
                     call: Call<PostStoryResponse>,
                     response: Response<PostStoryResponse>
