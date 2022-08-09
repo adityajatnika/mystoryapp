@@ -10,7 +10,6 @@ interface ApiServices {
 
     @FormUrlEncoded
     @POST("register")
-    @Headers("Authorization: token 12345")
     fun register(
         @Field("name") name:String,
         @Field("email") email:String,
@@ -52,7 +51,6 @@ interface ApiServices {
     ): Call<PostStoryResponse>
 
     @FormUrlEncoded
-    @Headers("Authorization: token 12345")
     @POST("login")
     fun login(
         @Field("email") email: String,
